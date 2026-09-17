@@ -1,0 +1,427 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+
+:root {
+  --bg-black: #000000;
+  --panel-bg: #0c0c0c;
+  --border-color: #2b2b2b;
+  --kiwoom-cyan: #3ba0e6;
+  --lotte-red: #d31145;
+  --yellow-accent: #fcd116;
+  --text-white: #ffffff;
+  --text-gray: #999999;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 !important;
+  font-family: 'Pretendard', sans-serif;
+  color: var(--text-white);
+}
+
+body {
+  background-color: #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ==========================================
+   PC 화면 꽉 차게 비율 조절 (여백 제거)
+   ========================================== */
+.scoreboard-wrapper {
+  width: 100vw;
+  height: 100vh;
+  max-width: 1920px;
+  max-height: 1080px;
+  background-color: var(--bg-black);
+  container-type: size;
+  padding: 0.5cqi;
+}
+
+.scoreboard-canvas {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 25% 47% 28%;
+  grid-template-rows: 67% 7% 26%;
+  gap: 0.4cqi;
+}
+
+.panel {
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ==========================================
+   1. LEFT PANEL: 원정 라인업
+   ========================================== */
+.lineup-left {
+  grid-column: 1;
+  grid-row: 1;
+  padding: 0.8cqi;
+  display: flex;
+  flex-direction: column;
+}
+
+.team-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--kiwoom-cyan);
+  padding-bottom: 0.4cqh;
+  margin-bottom: 0.8cqh;
+}
+
+.team-name {
+  font-weight: 900;
+  font-size: 2.2cqh;
+}
+
+.header-stat-title {
+  color: var(--text-gray);
+  font-size: 1.6cqh;
+}
+
+.lineup-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
+.lineup-list li {
+  display: flex;
+  align-items: center;
+  font-size: 2.2cqh;
+  padding: 0.3cqh 0.5cqi;
+}
+
+.lineup-list .num { width: 12%; color: var(--text-gray); font-weight: bold; }
+.lineup-list .name { flex: 1; font-weight: bold; }
+.lineup-list .pos { width: 18%; color: var(--kiwoom-cyan); font-weight: bold; }
+.lineup-list .avg { width: 22%; text-align: right; }
+
+.lineup-list li.active-batter {
+  border: 2px solid var(--kiwoom-cyan);
+  background: rgba(59, 160, 230, 0.15);
+}
+
+.pitcher-row {
+  margin-top: 0.5cqh;
+  border-top: 1px solid var(--border-color);
+  padding-top: 0.5cqh !important;
+}
+
+/* ==========================================
+   2. CENTER PANEL: 타자 정보
+   ========================================== */
+.batter-center {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  padding: 1.2cqi;
+  gap: 1.2cqi;
+}
+
+.player-graphic-card {
+  width: 38%;
+  height: 100%;
+  background: #111111;
+  border: 1px solid #222;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.2cqi;
+}
+
+.card-back-num {
+  font-size: 15cqh;
+  font-weight: 900;
+  color: #222;
+  line-height: 0.8;
+}
+
+.card-player-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-team { font-size: 2.2cqh; color: var(--kiwoom-cyan); font-weight: bold; }
+.card-pos { font-size: 1.6cqh; color: var(--text-gray); }
+
+.batter-details {
+  width: 62%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.batter-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1cqi;
+}
+
+.b-number { font-size: 7cqh; font-weight: 900; color: var(--yellow-accent); }
+.b-name { font-size: 6cqh; font-weight: 900; }
+
+.record-group {
+  border: 1px solid var(--border-color);
+  background: #050505;
+}
+
+.group-header {
+  background: #1a1a1a;
+  padding: 0.3cqh 0.8cqi;
+  font-size: 1.7cqh;
+  color: var(--text-gray);
+}
+
+.today-text {
+  padding: 0.8cqh 0.8cqi;
+  font-size: 2.6cqh;
+  font-weight: bold;
+}
+
+.season-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border-color);
+}
+
+.s-item {
+  background: #0a0a0a;
+  padding: 0.5cqh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.s-item span { font-size: 1.4cqh; color: var(--text-gray); }
+.s-item strong { font-size: 2.2cqh; margin-top: 0.2cqh; }
+
+/* ==========================================
+   3. RIGHT PANEL: 수비 라인업 및 투수
+   ========================================== */
+.defense-right {
+  grid-column: 3;
+  grid-row: 1;
+  padding: 0.8cqi;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.home-team-header {
+  border-bottom: 2px solid var(--lotte-red);
+  padding-bottom: 0.4cqh;
+}
+
+.sub-header {
+  background: #1f1f1f;
+  padding: 0.3cqh 0.6cqi;
+  font-size: 1.7cqh;
+  font-weight: bold;
+  margin-bottom: 0.5cqh;
+}
+
+.red-header { background: var(--lotte-red); }
+
+.field-container {
+  position: relative;
+  height: 20cqh;
+  background: #111;
+  border: 1px solid #222;
+}
+
+.f-pos {
+  position: absolute;
+  font-size: 1.5cqh;
+  font-weight: bold;
+  background: rgba(0,0,0,0.8);
+  padding: 0.1cqh 0.3cqi;
+}
+
+.p-cf { top: 8%; left: 38%; }
+.p-lf { top: 18%; left: 8%; }
+.p-rf { top: 18%; right: 8%; }
+.p-ss { top: 40%; left: 24%; }
+.p-2b { top: 40%; right: 24%; }
+.p-3b { top: 62%; left: 10%; }
+.p-1b { top: 62%; right: 10%; }
+.p-p  { top: 50%; left: 38%; color: var(--yellow-accent); }
+.p-c  { bottom: 4%; left: 38%; }
+
+.p-main-info {
+  display: flex;
+  align-items: baseline;
+  gap: 1cqi;
+  margin-bottom: 0.3cqh;
+}
+
+.p-num { font-size: 3.5cqh; font-weight: 900; color: var(--yellow-accent); }
+.p-name { font-size: 3cqh; font-weight: bold; }
+
+.p-stats-row, .p-stats-row2 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.7cqh;
+  color: var(--text-gray);
+  margin-bottom: 0.2cqh;
+}
+
+.p-stats-row strong, .p-stats-row2 strong { color: #fff; }
+
+/* ==========================================
+   4. MID STATUS BAR
+   ========================================== */
+.mid-status-bar {
+  grid-column: 1 / 4;
+  grid-row: 2;
+  background: #111;
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.2cqi;
+  font-size: 1.8cqh;
+}
+
+.pitch-counts span, .referees span {
+  margin-right: 1.2cqi;
+  color: var(--text-gray);
+}
+
+.pitch-counts strong { color: #fff; }
+.game-time strong { color: var(--yellow-accent); margin-left: 0.4cqi; }
+
+.bso-small { display: flex; gap: 0.8cqi; align-items: center; }
+.bso-small .lbl-t { color: var(--yellow-accent); font-weight: bold; }
+.bso-small .lbl-b { color: #3bce42; font-weight: bold; }
+.bso-small .lbl-s { color: #f2a900; font-weight: bold; }
+.bso-small .lbl-o { color: #e63946; font-weight: bold; }
+
+/* ==========================================
+   5. BOTTOM SCOREBOARD & RUNNERS
+   ========================================== */
+.bottom-scoreboard {
+  grid-column: 1 / 4;
+  grid-row: 3;
+  display: flex;
+  gap: 0.4cqi;
+}
+
+.score-table {
+  flex: 1;
+  border-collapse: collapse;
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.score-table th, .score-table td {
+  border: 1px solid var(--border-color);
+  font-size: 2.2cqh;
+  font-weight: bold;
+}
+
+.score-table thead th {
+  color: var(--text-gray);
+  font-size: 1.6cqh;
+  font-weight: normal;
+  background: #151515;
+}
+
+.team-td { width: 14%; text-align: left; padding-left: 0.8cqi; }
+.stat-col, .stat-td { font-size: 2.4cqh; color: var(--yellow-accent); }
+
+.active-inning {
+  background: var(--lotte-red);
+  color: #fff;
+}
+
+/* 주자 그래픽 및 이름 표시 */
+.bso-and-runners {
+  width: 25%;
+  background: var(--panel-bg);
+  border: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0.8cqi;
+}
+
+.runner-field {
+  position: relative;
+  width: 9cqh;
+  height: 9cqh;
+}
+
+.b-base {
+  position: absolute;
+  width: 2.6cqh;
+  height: 2.6cqh;
+  border: 1px solid #444;
+  background: #151515;
+  transform: rotate(45deg);
+}
+
+.b-base.occupied {
+  background: var(--yellow-accent);
+  border-color: #fff;
+}
+
+.b-1 { bottom: 0.5cqh; right: 0.5cqh; }
+.b-2 { top: 0.5cqh; left: 3.2cqh; }
+.b-3 { bottom: 0.5cqh; left: 0.5cqh; }
+
+/* 베이스 위 주자 이름 태그 */
+.runner-tag {
+  position: absolute;
+  transform: rotate(-45deg);
+  font-size: 1.2cqh;
+  font-weight: bold;
+  color: #000;
+  width: 100%;
+  text-align: center;
+  white-space: nowrap;
+  top: 20%;
+}
+
+.bso-dots {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6cqh;
+}
+
+.bso-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5cqi;
+}
+
+.bso-lbl {
+  font-size: 2cqh;
+  font-weight: bold;
+  width: 2cqi;
+}
+
+.dot {
+  width: 1.8cqh;
+  height: 1.8cqh;
+  background: #222;
+  border-radius: 50% !important;
+}
+
+.bso-row:nth-child(1) .dot.active { background: #3bce42; }
+.bso-row:nth-child(2) .dot.active { background: #f2a900; }
+.bso-row:nth-child(3) .dot.active { background: #e63946; }
