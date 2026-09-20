@@ -30,9 +30,6 @@ body {
   overflow: hidden;
 }
 
-/* ==========================================
-   PC 화면 꽉 차게 비율 조절 (여백 제거)
-   ========================================== */
 .scoreboard-wrapper {
   width: 100vw;
   height: 100vh;
@@ -47,7 +44,7 @@ body {
   width: 100%;
   height: 100%;
   display: grid;
-  grid-template-columns: 25% 47% 28%;
+  grid-template-columns: 28% 44% 28%;
   grid-template-rows: 67% 7% 26%;
   gap: 0.4cqi;
 }
@@ -59,15 +56,12 @@ body {
   overflow: hidden;
 }
 
-/* ==========================================
-   1. LEFT PANEL: 원정 라인업
-   ========================================== */
-.lineup-left {
-  grid-column: 1;
-  grid-row: 1;
+/* LEFT / RIGHT PANELS */
+.panel-left, .panel-right {
   padding: 0.8cqi;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .team-header {
@@ -77,6 +71,10 @@ body {
   border-bottom: 2px solid var(--kiwoom-cyan);
   padding-bottom: 0.4cqh;
   margin-bottom: 0.8cqh;
+}
+
+.home-header {
+  border-bottom-color: var(--lotte-red);
 }
 
 .team-name {
@@ -100,18 +98,24 @@ body {
 .lineup-list li {
   display: flex;
   align-items: center;
-  font-size: 2.2cqh;
-  padding: 0.3cqh 0.5cqi;
+  font-size: 1.9cqh;
+  padding: 0.2cqh 0.4cqi;
 }
 
 .lineup-list .num { width: 12%; color: var(--text-gray); font-weight: bold; }
 .lineup-list .name { flex: 1; font-weight: bold; }
 .lineup-list .pos { width: 18%; color: var(--kiwoom-cyan); font-weight: bold; }
+.home-lineup .pos { color: var(--lotte-red); }
 .lineup-list .avg { width: 22%; text-align: right; }
 
 .lineup-list li.active-batter {
   border: 2px solid var(--kiwoom-cyan);
   background: rgba(59, 160, 230, 0.15);
+}
+
+.home-lineup li.active-batter {
+  border-color: var(--lotte-red);
+  background: rgba(211, 17, 69, 0.15);
 }
 
 .pitcher-row {
@@ -120,112 +124,7 @@ body {
   padding-top: 0.5cqh !important;
 }
 
-/* ==========================================
-   2. CENTER PANEL: 타자 정보
-   ========================================== */
-.batter-center {
-  grid-column: 2;
-  grid-row: 1;
-  display: flex;
-  padding: 1.2cqi;
-  gap: 1.2cqi;
-}
-
-.player-graphic-card {
-  width: 38%;
-  height: 100%;
-  background: #111111;
-  border: 1px solid #222;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1.2cqi;
-}
-
-.card-back-num {
-  font-size: 15cqh;
-  font-weight: 900;
-  color: #222;
-  line-height: 0.8;
-}
-
-.card-player-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.card-team { font-size: 2.2cqh; color: var(--kiwoom-cyan); font-weight: bold; }
-.card-pos { font-size: 1.6cqh; color: var(--text-gray); }
-
-.batter-details {
-  width: 62%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.batter-title-row {
-  display: flex;
-  align-items: baseline;
-  gap: 1cqi;
-}
-
-.b-number { font-size: 7cqh; font-weight: 900; color: var(--yellow-accent); }
-.b-name { font-size: 6cqh; font-weight: 900; }
-
-.record-group {
-  border: 1px solid var(--border-color);
-  background: #050505;
-}
-
-.group-header {
-  background: #1a1a1a;
-  padding: 0.3cqh 0.8cqi;
-  font-size: 1.7cqh;
-  color: var(--text-gray);
-}
-
-.today-text {
-  padding: 0.8cqh 0.8cqi;
-  font-size: 2.6cqh;
-  font-weight: bold;
-}
-
-.season-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1px;
-  background: var(--border-color);
-}
-
-.s-item {
-  background: #0a0a0a;
-  padding: 0.5cqh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.s-item span { font-size: 1.4cqh; color: var(--text-gray); }
-.s-item strong { font-size: 2.2cqh; margin-top: 0.2cqh; }
-
-/* ==========================================
-   3. RIGHT PANEL: 수비 라인업 및 투수
-   ========================================== */
-.defense-right {
-  grid-column: 3;
-  grid-row: 1;
-  padding: 0.8cqi;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.home-team-header {
-  border-bottom: 2px solid var(--lotte-red);
-  padding-bottom: 0.4cqh;
-}
-
+/* DEFENSE VIEW */
 .sub-header {
   background: #1f1f1f;
   padding: 0.3cqh 0.6cqi;
@@ -235,17 +134,19 @@ body {
 }
 
 .red-header { background: var(--lotte-red); }
+.blue-header { background: var(--kiwoom-cyan); }
 
 .field-container {
   position: relative;
-  height: 20cqh;
+  height: 18cqh;
   background: #111;
   border: 1px solid #222;
+  margin-bottom: 0.8cqh;
 }
 
 .f-pos {
   position: absolute;
-  font-size: 1.5cqh;
+  font-size: 1.4cqh;
   font-weight: bold;
   background: rgba(0,0,0,0.8);
   padding: 0.1cqh 0.3cqi;
@@ -261,6 +162,11 @@ body {
 .p-p  { top: 50%; left: 38%; color: var(--yellow-accent); }
 .p-c  { bottom: 4%; left: 38%; }
 
+.pitcher-section {
+  display: flex;
+  flex-direction: column;
+}
+
 .p-main-info {
   display: flex;
   align-items: baseline;
@@ -274,16 +180,101 @@ body {
 .p-stats-row, .p-stats-row2 {
   display: flex;
   justify-content: space-between;
-  font-size: 1.7cqh;
+  font-size: 1.6cqh;
   color: var(--text-gray);
   margin-bottom: 0.2cqh;
 }
 
 .p-stats-row strong, .p-stats-row2 strong { color: #fff; }
 
-/* ==========================================
-   4. MID STATUS BAR
-   ========================================== */
+/* CENTER PANEL */
+.batter-center {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  padding: 1cqh 1cqi;
+  gap: 1cqi;
+}
+
+.player-graphic-card {
+  width: 38%;
+  height: 100%;
+  background: #111111;
+  border: 1px solid #222;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1cqi;
+}
+
+.card-back-num {
+  font-size: 12cqh;
+  font-weight: 900;
+  color: #333;
+  line-height: 0.8;
+}
+
+.card-player-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-team { font-size: 2cqh; color: var(--kiwoom-cyan); font-weight: bold; }
+.card-pos { font-size: 1.5cqh; color: var(--text-gray); }
+
+.batter-details {
+  width: 62%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.batter-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1cqi;
+}
+
+.b-number { font-size: 5.5cqh; font-weight: 900; color: var(--yellow-accent); }
+.b-name { font-size: 4.8cqh; font-weight: 900; }
+
+.record-group {
+  border: 1px solid var(--border-color);
+  background: #050505;
+}
+
+.group-header {
+  background: #1a1a1a;
+  padding: 0.3cqh 0.8cqi;
+  font-size: 1.6cqh;
+  color: var(--text-gray);
+}
+
+.today-text {
+  padding: 0.6cqh 0.8cqi;
+  font-size: 2.2cqh;
+  font-weight: bold;
+}
+
+.season-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--border-color);
+}
+
+.s-item {
+  background: #0a0a0a;
+  padding: 0.4cqh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.s-item span { font-size: 1.3cqh; color: var(--text-gray); }
+.s-item strong { font-size: 2cqh; margin-top: 0.1cqh; }
+
+/* MID STATUS BAR */
 .mid-status-bar {
   grid-column: 1 / 4;
   grid-row: 2;
@@ -305,14 +296,12 @@ body {
 .game-time strong { color: var(--yellow-accent); margin-left: 0.4cqi; }
 
 .bso-small { display: flex; gap: 0.8cqi; align-items: center; }
-.bso-small .lbl-t { color: var(--yellow-accent); font-weight: bold; }
+.bso-small .lbl-t { color: var(--yellow-accent); font-weight: bold; font-size: 1.5cqh; }
 .bso-small .lbl-b { color: #3bce42; font-weight: bold; }
 .bso-small .lbl-s { color: #f2a900; font-weight: bold; }
 .bso-small .lbl-o { color: #e63946; font-weight: bold; }
 
-/* ==========================================
-   5. BOTTOM SCOREBOARD & RUNNERS
-   ========================================== */
+/* BOTTOM SCOREBOARD & RUNNERS */
 .bottom-scoreboard {
   grid-column: 1 / 4;
   grid-row: 3;
@@ -349,7 +338,6 @@ body {
   color: #fff;
 }
 
-/* 주자 그래픽 및 이름 표시 */
 .bso-and-runners {
   width: 25%;
   background: var(--panel-bg);
@@ -384,7 +372,6 @@ body {
 .b-2 { top: 0.5cqh; left: 3.2cqh; }
 .b-3 { bottom: 0.5cqh; left: 0.5cqh; }
 
-/* 베이스 위 주자 이름 태그 */
 .runner-tag {
   position: absolute;
   transform: rotate(-45deg);

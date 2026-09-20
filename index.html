@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>야구 전광판 - 메인 홈</title>
+  <link rel="stylesheet" href="css/home.css">
+</head>
+<body>
+  <div class="home-container">
+    <!-- 헤더 영역 -->
+    <header class="home-header">
+      <div class="logo">
+        <span class="logo-icon">⚾</span>
+        <h1>BASEBALL SCOREBOARD</h1>
+      </div>
+      <p class="subtitle">디지털 야구 경기 전광판 관리 시스템</p>
+    </header>
+
+    <!-- 메인 콘텐츠 카드 영역 -->
+    <main class="home-main">
+      <!-- 1. 경기 생성 섹션 (주요 동작) -->
+      <section class="card create-card">
+        <div class="card-header">
+          <span class="badge">START GAME</span>
+          <h2>새 경기 시작하기</h2>
+        </div>
+        <p class="card-desc">새로운 경기 방을 생성하고 컨트롤러 및 전광판을 연결합니다.</p>
+        
+        <button id="create-room-btn" class="btn btn-primary">
+          <span class="btn-text">새 경기 만들기</span>
+          <span class="spinner" hidden></span>
+        </button>
+
+        <!-- 방 생성 완료 시 표시되는 결과 영역 -->
+        <div id="room-created" class="room-created-box" hidden>
+          <div class="success-header">
+            <span class="check-icon">✓</span>
+            <span>경기 생성 완료</span>
+          </div>
+          <div class="code-display">
+            <span class="code-label">경기 코드</span>
+            <span id="room-code" class="code-number">------</span>
+          </div>
+          <div class="action-group">
+            <button id="copy-code-btn" class="btn btn-secondary">코드 복사</button>
+
+            <!-- 컨트롤러 / 스코어보드 진입 버튼 -->
+            <div class="nav-btn-group">
+              <a id="go-controller-btn" class="btn btn-accent" href="#">컨트롤러 이동</a>
+              <a id="go-scoreboard-btn" class="btn btn-accent-outline" href="#">전광판 이동</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 구분선 -->
+      <div class="divider">
+        <span>OR</span>
+      </div>
+
+      <!-- 2. 경기 참가 섹션 -->
+      <section class="card join-card">
+        <div class="card-header">
+          <span class="badge badge-sub">JOIN GAME</span>
+          <h2>기존 경기 참가하기</h2>
+        </div>
+        <p class="card-desc">발급받은 6자리 경기 코드를 입력하여 방에 입장하세요.</p>
+        
+        <div class="join-form">
+          <div class="input-group">
+            <label for="join-room-code" class="sr-only">경기 코드</label>
+            <input 
+              type="text" 
+              id="join-room-code" 
+              placeholder="6자리 코드 입력 (예: 583214)" 
+              maxlength="6"
+              autocomplete="off"
+            >
+          </div>
+          <button id="join-room-btn" class="btn btn-secondary">경기 참가</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- 푸터 -->
+    <footer class="home-footer">
+      <p>&copy; 2026 Baseball Scoreboard System. All rights reserved.</p>
+    </footer>
+  </div>
+
+  <!-- type="module"을 지정하여 import/export 지원 -->
+  <script type="module" src="js/home.js"></script>
+</body>
+</html>

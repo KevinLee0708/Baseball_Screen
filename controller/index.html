@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>야구 전광판 - 경기 컨트롤러</title>
+  <link rel="stylesheet" href="../css/controller.css">
+</head>
+<body>
+  <div class="controller-container">
+    
+    <!-- 1. 헤더: 경기 코드 & 접속 상태 & 이닝 변경 -->
+    <header class="ctrl-header">
+      <div class="header-left">
+        <span class="room-tag">ROOM <strong id="display-room-code">------</strong></span>
+        <span class="status-badge live" id="connection-status">● LIVE</span>
+      </div>
+      <div class="header-right">
+        <button type="button" class="btn btn-sm btn-outline" id="btn-change-inning">이닝 강제 교체 🔄</button>
+      </div>
+    </header>
+
+    <!-- 2. 타순별 라인업 개별 등록 섹션 -->
+    <section class="section-card lineup-section">
+      <div class="section-header">
+        <h3 class="section-title">📋 선발 라인업 개별 등록 (1~9번 타자 & 투수)</h3>
+      </div>
+
+      <!-- 원정팀/홈팀 탭 버튼 -->
+      <div class="team-tab-group">
+        <button type="button" class="tab-btn active" id="tab-away-btn" data-target="tab-away-panel">원정팀 라인업</button>
+        <button type="button" class="tab-btn" id="tab-home-btn" data-target="tab-home-panel">홈팀 라인업</button>
+      </div>
+
+      <!-- 원정팀 라인업 입력 패널 -->
+      <div class="tab-panel active" id="tab-away-panel">
+        <div class="form-group margin-bottom-sm">
+          <label for="input-away-team-name">원정팀 팀명</label>
+          <input type="text" id="input-away-team-name" class="form-control" placeholder="팀명 (예: SSG Landers)" value="원정팀">
+        </div>
+
+        <div class="lineup-grid-header">
+          <span>타순/구분</span>
+          <span>선수 이름</span>
+          <span>등번호</span>
+          <span>포지션</span>
+        </div>
+
+        <div class="lineup-inputs-container" id="away-lineup-rows">
+          <!-- 1~9번 타자 및 투수 행 -->
+          <div class="lineup-row">
+            <span class="order-tag">1번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="CF">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">2번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="SS">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">3번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="LF">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">4번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="1B">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">5번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="DH">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">6번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="3B">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">7번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="RF">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">8번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="C">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">9번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="2B">
+          </div>
+          <div class="lineup-row pitcher-row">
+            <span class="order-tag pitch-tag">선발 투수</span>
+            <input type="text" class="form-control p-name" placeholder="투수 이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" value="P" readonly>
+          </div>
+        </div>
+      </div>
+
+      <!-- 홈팀 라인업 입력 패널 -->
+      <div class="tab-panel" id="tab-home-panel">
+        <div class="form-group margin-bottom-sm">
+          <label for="input-home-team-name">홈팀 팀명</label>
+          <input type="text" id="input-home-team-name" class="form-control" placeholder="팀명 (예: LG Twins)" value="홈팀">
+        </div>
+
+        <div class="lineup-grid-header">
+          <span>타순/구분</span>
+          <span>선수 이름</span>
+          <span>등번호</span>
+          <span>포지션</span>
+        </div>
+
+        <div class="lineup-inputs-container" id="home-lineup-rows">
+          <div class="lineup-row">
+            <span class="order-tag">1번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="RF">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">2번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="2B">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">3번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="LF">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">4번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="1B">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">5번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="3B">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">6번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="DH">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">7번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="SS">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">8번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="C">
+          </div>
+          <div class="lineup-row">
+            <span class="order-tag">9번 타자</span>
+            <input type="text" class="form-control p-name" placeholder="이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" placeholder="포지션" value="CF">
+          </div>
+          <div class="lineup-row pitcher-row">
+            <span class="order-tag pitch-tag">선발 투수</span>
+            <input type="text" class="form-control p-name" placeholder="투수 이름">
+            <input type="text" class="form-control p-num" placeholder="등번호">
+            <input type="text" class="form-control p-pos" value="P" readonly>
+          </div>
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-full margin-top-sm" id="btn-apply-lineup">라인업 및 팀 정보 등록 완료 🚀</button>
+    </section>
+
+    <!-- 3. 경기 핵심 전황 판 -->
+    <section class="dashboard-card">
+      <div class="match-summary">
+        <div class="team-summary away" id="team-summary-away">
+          <span class="team-name" id="away-team-name">원정팀</span>
+          <span class="team-score" id="away-total-score">0</span>
+        </div>
+        
+        <div class="inning-badge" id="current-inning-display">
+          <span id="display-inning-num">1</span>회<span id="display-inning-half">초</span>
+        </div>
+
+        <div class="team-summary home" id="team-summary-home">
+          <span class="team-score" id="home-total-score">0</span>
+          <span class="team-name" id="home-team-name">홈팀</span>
+        </div>
+      </div>
+
+      <!-- 선수 매치업 -->
+      <div class="matchup-box">
+        <div class="matchup-item batter-box">
+          <span class="label">ATTACK (타자)</span>
+          <div class="player-info">
+            <span class="player-num" id="current-batter-num">#--</span>
+            <span class="player-name" id="current-batter-name">타자 미등록</span>
+            <span class="player-pos" id="current-batter-pos">--</span>
+          </div>
+          <div class="player-sub-stats" id="current-batter-stats">타율 .---</div>
+        </div>
+
+        <div class="vs-divider">VS</div>
+
+        <div class="matchup-item pitcher-box">
+          <span class="label">DEFENSE (투수)</span>
+          <div class="player-info">
+            <span class="player-num" id="current-pitcher-num">#--</span>
+            <span class="player-name" id="current-pitcher-name">투수 미등록</span>
+          </div>
+          <div class="player-sub-stats" id="current-pitcher-stats">0구 (B:0 S:0) ERA --.--</div>
+        </div>
+      </div>
+
+      <!-- BSO 및 필드 주자 현황 -->
+      <div class="game-status-grid">
+        <div class="bso-board">
+          <div class="bso-row">
+            <span class="bso-label ball-label">B</span>
+            <div class="bso-dots" id="bso-balls">
+              <span class="dot ball"></span>
+              <span class="dot ball"></span>
+              <span class="dot ball"></span>
+            </div>
+          </div>
+          <div class="bso-row">
+            <span class="bso-label strike-label">S</span>
+            <div class="bso-dots" id="bso-strikes">
+              <span class="dot strike"></span>
+              <span class="dot strike"></span>
+            </div>
+          </div>
+          <div class="bso-row">
+            <span class="bso-label out-label">O</span>
+            <div class="bso-dots" id="bso-outs">
+              <span class="dot out"></span>
+              <span class="dot out"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="diamond-board">
+          <div class="base base-2" id="base-2-indicator" data-base="base2">
+            <span class="base-label">2루</span>
+            <span class="runner-name" id="runner-2-name">empty</span>
+          </div>
+          <div class="base base-3" id="base-3-indicator" data-base="base3">
+            <span class="base-label">3루</span>
+            <span class="runner-name" id="runner-3-name">empty</span>
+          </div>
+          <div class="base base-1" id="base-1-indicator" data-base="base1">
+            <span class="base-label">1루</span>
+            <span class="runner-name" id="runner-1-name">empty</span>
+          </div>
+          <div class="home-plate">HOME</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. 빠른 투구 입력 섹션 -->
+    <section class="section-card pitch-control-section">
+      <h3 class="section-title">⚡ 빠른 투구 입력 (Quick Pitch)</h3>
+      <div class="pitch-btn-group">
+        <button type="button" class="btn btn-pitch btn-ball" id="pitch-ball">
+          <span class="btn-main-text">BALL</span>
+          <span class="btn-sub-text">볼 (+1)</span>
+        </button>
+        <button type="button" class="btn btn-pitch btn-strike" id="pitch-strike">
+          <span class="btn-main-text">STRIKE</span>
+          <span class="btn-sub-text">스트라이크 (+1)</span>
+        </button>
+        <button type="button" class="btn btn-pitch btn-foul" id="pitch-foul">
+          <span class="btn-main-text">FOUL</span>
+          <span class="btn-sub-text">파울</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- 5. 타격 결과 수동 입력 섹션 -->
+    <section class="section-card">
+      <div class="section-header">
+        <h3 class="section-title">⚾ 타격 및 타석 결과 기록</h3>
+        <button type="button" class="btn btn-xs btn-outline" id="btn-next-batter-manual">다음 타자로 강제 이동 ⏭</button>
+      </div>
+      <div class="grid-buttons hit-result-grid">
+        <button type="button" class="btn btn-action" data-record="안타">Single (1루타)</button>
+        <button type="button" class="btn btn-action" data-record="2루타">Double (2루타)</button>
+        <button type="button" class="btn btn-action" data-record="3루타">Triple (3루타)</button>
+        <button type="button" class="btn btn-action btn-highlight-orange" data-record="홈런">HR (홈런)</button>
+        <button type="button" class="btn btn-action" data-record="볼넷">BB (볼넷)</button>
+        <button type="button" class="btn btn-action" data-record="사구">HBP (몸에 맞은 공)</button>
+        <button type="button" class="btn btn-action" data-record="삼진">SO (삼진)</button>
+        <button type="button" class="btn btn-action" data-record="땅볼">Grounder (땅볼)</button>
+        <button type="button" class="btn btn-action" data-record="뜬공">Fly Ball (뜬공)</button>
+        <button type="button" class="btn btn-action" data-record="희생번트">SAC 번트</button>
+        <button type="button" class="btn btn-action" data-record="희생플라이">SAC 플라이</button>
+        <button type="button" class="btn btn-action" data-record="병살타">DP (병살타)</button>
+        <button type="button" class="btn btn-action" data-record="실책">Error (실책)</button>
+      </div>
+    </section>
+
+    <!-- 6. 주자 수동 설정 섹션 -->
+    <section class="section-card">
+      <h3 class="section-title">🏃 주자 위치 수동 지정</h3>
+      <div class="runner-selector-group">
+        <div class="runner-input-row">
+          <label for="runner-base1-select">1루 주자</label>
+          <select id="runner-base1-select" class="form-control">
+            <option value="">(주자 없음)</option>
+          </select>
+        </div>
+        <div class="runner-input-row">
+          <label for="runner-base2-select">2루 주자</label>
+          <select id="runner-base2-select" class="form-control">
+            <option value="">(주자 없음)</option>
+          </select>
+        </div>
+        <div class="runner-input-row">
+          <label for="runner-base3-select">3루 주자</label>
+          <select id="runner-base3-select" class="form-control">
+            <option value="">(주자 없음)</option>
+          </select>
+        </div>
+        <button type="button" class="btn btn-secondary btn-full" id="btn-apply-runners">주자 상태 적용</button>
+      </div>
+    </section>
+
+    <!-- 7. 점수 및 팀 스탯 수동 조작 -->
+    <section class="section-card">
+      <h3 class="section-title">📊 점수 및 팀 스탯 수동 조작</h3>
+      <div class="score-adjust-container">
+        <div class="team-adjust-box">
+          <div class="adjust-header">
+            <strong id="adjust-away-title">원정팀</strong>
+            <span class="current-score-tag">현재 이닝 점수: <em id="away-current-inning-score">0</em></span>
+          </div>
+          <div class="adjust-row">
+            <span class="adjust-label">이닝 득점 (R)</span>
+            <div class="counter-control">
+              <button type="button" class="btn-step" id="btn-away-run-minus">-1</button>
+              <button type="button" class="btn-step" id="btn-away-run-plus">+1</button>
+            </div>
+          </div>
+          <div class="adjust-stats-grid">
+            <button type="button" class="btn btn-stat-step" id="btn-away-stat-h">+ 안타 (H)</button>
+            <button type="button" class="btn btn-stat-step" id="btn-away-stat-e">+ 실책 (E)</button>
+            <button type="button" class="btn btn-stat-step" id="btn-away-stat-b">+ 볼넷 (B)</button>
+          </div>
+        </div>
+
+        <div class="team-adjust-box">
+          <div class="adjust-header">
+            <strong id="adjust-home-title">홈팀</strong>
+            <span class="current-score-tag">현재 이닝 점수: <em id="home-current-inning-score">0</em></span>
+          </div>
+          <div class="adjust-row">
+            <span class="adjust-label">이닝 득점 (R)</span>
+            <div class="counter-control">
+              <button type="button" class="btn-step" id="btn-home-run-minus">-1</button>
+              <button type="button" class="btn-step" id="btn-home-run-plus">+1</button>
+            </div>
+          </div>
+          <div class="adjust-stats-grid">
+            <button type="button" class="btn btn-stat-step" id="btn-home-stat-h">+ 안타 (H)</button>
+            <button type="button" class="btn btn-stat-step" id="btn-home-stat-e">+ 실책 (E)</button>
+            <button type="button" class="btn btn-stat-step" id="btn-home-stat-b">+ 볼넷 (B)</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. 선수 교체 및 대타/대주자 모달 열기 섹션 -->
+    <section class="section-card">
+      <h3 class="section-title">🔄 선수 교체 및 경기 중 변경</h3>
+      <div class="substitution-btn-group">
+        <button type="button" class="btn btn-secondary" id="btn-open-pitcher-sub">투수 교체</button>
+        <button type="button" class="btn btn-secondary" id="btn-open-batter-sub">대타 / 대주자 교체</button>
+      </div>
+    </section>
+
+    <!-- 선수 교체 모달 -->
+    <div class="modal-overlay" id="sub-modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 id="modal-title">선수 교체</h4>
+          <button type="button" class="close-btn" id="btn-close-modal" aria-label="닫기">✕</button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="sub-team-select">대상 팀</label>
+            <select id="sub-team-select" class="form-control">
+              <option value="away">원정팀</option>
+              <option value="home">홈팀</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="sub-target-player">교체될 기존 선수 (OUT)</label>
+            <select id="sub-target-player" class="form-control"></select>
+          </div>
+          <div class="form-group">
+            <label for="sub-type-select">교체 구분</label>
+            <select id="sub-type-select" class="form-control">
+              <option value="DEFENSE">수비 위치 변경 / 투수 교체</option>
+              <option value="P">대타 (P)</option>
+              <option value="R">대주자 (R)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="sub-new-player-name">교체할 선수 이름 (IN)</label>
+            <input type="text" id="sub-new-player-name" class="form-control" placeholder="예: 홍길동">
+          </div>
+          <div class="form-group">
+            <label for="sub-new-player-num">등번호 / 포지션</label>
+            <div class="input-inline">
+              <input type="text" id="sub-new-player-backnum" class="form-control" placeholder="등번호 (예: 17)">
+              <input type="text" id="sub-new-player-pos" class="form-control" placeholder="포지션 (예: P, 1B)">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="btn-cancel-sub">취소</button>
+          <button type="button" class="btn btn-primary" id="btn-confirm-sub">선수 교체 확정</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 탭 전환 및 기본 스크립트 -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // 모달 조작
+      const modal = document.getElementById("sub-modal");
+      const btnClose = document.getElementById("btn-close-modal");
+      const btnCancel = document.getElementById("btn-cancel-sub");
+      const btnOpenPitcher = document.getElementById("btn-open-pitcher-sub");
+      const btnOpenBatter = document.getElementById("btn-open-batter-sub");
+
+      const closeModal = () => { if (modal) modal.style.display = "none"; };
+      const openModal = () => { if (modal) modal.style.display = "flex"; };
+
+      if (btnClose) btnClose.addEventListener("click", closeModal);
+      if (btnCancel) btnCancel.addEventListener("click", closeModal);
+      if (btnOpenPitcher) btnOpenPitcher.addEventListener("click", openModal);
+      if (btnOpenBatter) btnOpenBatter.addEventListener("click", openModal);
+
+      // 팀 라인업 탭 전환 로직
+      const tabs = document.querySelectorAll(".tab-btn");
+      tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll(".tab-btn").forEach(t => t.classList.remove("active"));
+          document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+          
+          tab.classList.add("active");
+          const targetId = tab.getAttribute("data-target");
+          document.getElementById(targetId).classList.add("active");
+        });
+      });
+    });
+  </script>
+
+  <script type="module" src="../js/controller.js"></script>
+</body>
+</html>

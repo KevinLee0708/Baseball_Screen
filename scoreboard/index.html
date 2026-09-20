@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sajik Baseball Live Scoreboard</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <div class="scoreboard-wrapper">
+    <div class="scoreboard-canvas">
+
+      <!-- ==========================================
+           1. LEFT: 원정팀 패널 (공격: 라인업 / 수비: 수비포지션&투수)
+           ========================================== -->
+      <div class="panel panel-left" id="away-panel">
+        <!-- JS에서 동적 생성 -->
+      </div>
+
+      <!-- ==========================================
+           2. CENTER: 현재 타자 정보
+           ========================================== -->
+      <div class="panel batter-center">
+        <div class="player-graphic-card">
+          <div class="card-back-num" id="current-batter-num">-</div>
+          <div class="card-player-info">
+            <span class="card-team" id="current-batter-team">-</span>
+            <span class="card-pos" id="current-batter-pos">-</span>
+          </div>
+        </div>
+
+        <div class="batter-details">
+          <div class="batter-title-row">
+            <span class="b-number" id="batter-back-num">-</span>
+            <span class="b-name" id="batter-name">-</span>
+          </div>
+
+          <div class="record-group today-record">
+            <div class="group-header">오늘의 기록</div>
+            <div class="today-text" id="today-record-text">-</div>
+          </div>
+
+          <div class="record-group season-record">
+            <div class="group-header">시즌 기록</div>
+            <div class="season-grid" id="season-stats-grid">
+              <!-- JS에서 동적 생성 -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           3. RIGHT: 홈팀 패널 (수비: 수비포지션&투수 / 공격: 라인업)
+           ========================================== -->
+      <div class="panel panel-right" id="home-panel">
+        <!-- JS에서 동적 생성 -->
+      </div>
+
+      <!-- ==========================================
+           4. MID BAR: 투구/심판/경기시간 상태줄
+           ========================================== -->
+      <div class="mid-status-bar">
+        <div class="pitch-counts" id="pitch-counts">
+          <span>T <strong id="pitch-total">0</strong></span>
+          <span>B <strong id="pitch-balls">0</strong></span>
+          <span>S <strong id="pitch-strikes">0</strong></span>
+          <span>K <strong id="pitch-so">0</strong></span>
+        </div>
+        <div class="referees" id="referees-list">
+          <!-- JS에서 동적 생성 -->
+        </div>
+        <div class="game-time">
+          <span>경기시간</span>
+          <strong id="game-time-val">00:00</strong>
+        </div>
+        <div class="bso-small">
+          <span class="lbl-t">T</span><span class="val" id="mini-pitch-count">0</span>
+          <span class="lbl-b">B</span><span class="val" id="mini-b">0</span>
+          <span class="lbl-s">S</span><span class="val" id="mini-s">0</span>
+          <span class="lbl-o">O</span><span class="val" id="mini-o">0</span>
+        </div>
+      </div>
+
+      <!-- ==========================================
+           5. BOTTOM: 이닝 스코어보드 & 주자/BSO
+           ========================================== -->
+      <div class="bottom-scoreboard">
+        <table class="score-table">
+          <thead>
+            <tr>
+              <th class="team-col"></th>
+              <th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th><th>7</th><th>8</th><th>9</th><th>10</th><th>11</th><th>12</th>
+              <th class="stat-col">R</th><th class="stat-col">H</th><th class="stat-col">E</th><th class="stat-col">B</th>
+            </tr>
+          </thead>
+          <tbody id="scoreboard-tbody">
+            <!-- JS에서 동적 생성 -->
+          </tbody>
+        </table>
+
+        <!-- B/S/O 및 베이스/주자 상황 -->
+        <div class="bso-and-runners">
+          <div class="runner-field">
+            <div class="b-base b-2" id="base-2">
+              <span class="runner-tag" id="runner-2-name"></span>
+            </div>
+            <div class="b-base b-3" id="base-3">
+              <span class="runner-tag" id="runner-3-name"></span>
+            </div>
+            <div class="b-base b-1" id="base-1">
+              <span class="runner-tag" id="runner-1-name"></span>
+            </div>
+          </div>
+
+          <div class="bso-dots">
+            <div class="bso-row" id="bso-balls">
+              <span class="bso-lbl">B</span><span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <div class="bso-row" id="bso-strikes">
+              <span class="bso-lbl">S</span><span class="dot"></span><span class="dot"></span>
+            </div>
+            <div class="bso-row" id="bso-outs">
+              <span class="bso-lbl">O</span><span class="dot"></span><span class="dot"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module" src="../js/app.js"></script>
+</body>
+</html>
